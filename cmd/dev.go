@@ -63,11 +63,16 @@ var devCmd = &cobra.Command{
 func buildModuleTemp(moduleDir, tempDir string) (string, error) {
 	outputPath := filepath.Join(tempDir, "module.so")
 
+	pluginDir, _ := os.Getwd()
+
 	cmd := exec.Command(
 		"go",
 		"build",
 		"-buildmode=plugin",
 		"-mod=vendor",
+		"--trimpath",
+		"-gcflags", fmt.Sprintf("-trimpath %s", pluginDir),
+		"-asmflags", fmt.Sprintf("-trimpath %s", pluginDir),
 		"-o",
 		outputPath,
 	)

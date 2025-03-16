@@ -5,7 +5,13 @@ BINARY_NAME=peykar
 
 
 build:
-	GOOS=linux go build -o ./build/$(BINARY_NAME)
+	go build \
+		-trimpath \
+		-mod=vendor \
+		-gcflags "-trimpath $(PWD)" \
+		-asmflags "-trimpath $(PWD)" \
+		-o ./build/peykar \
 
-install:
-	go install
+
+install: build
+	install -m 755 ./build/peykar $(GOPATH)/bin/
