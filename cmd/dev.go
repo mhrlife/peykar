@@ -63,7 +63,15 @@ var devCmd = &cobra.Command{
 func buildModuleTemp(moduleDir, tempDir string) (string, error) {
 	outputPath := filepath.Join(tempDir, "module.so")
 
-	cmd := exec.Command("go", "build", "-buildmode=plugin", "-o", outputPath)
+	cmd := exec.Command(
+		"go",
+		"build",
+		"-buildmode=plugin",
+		"-mod=vendor",
+		"-o",
+		outputPath,
+	)
+
 	cmd.Dir = moduleDir
 	cmd.Stderr = os.Stderr
 
